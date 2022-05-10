@@ -1,0 +1,70 @@
+@mixin size($width, $height: $width) {
+    width: $width;
+    height: $height;
+}
+
+@mixin transition {
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@mixin absolute($top: auto, $right: auto, $bottom: auto, $left: auto) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}
+
+@mixin media($max) {
+    @media only screen and (max-width: $max) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @include media(533px) {
+        @content;
+    }
+}
+
+@mixin md {
+    @include media(767px) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @include media(991px) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @include media(1023px) {
+        @content;
+    }
+}
+
+@mixin xxl {
+    @include media(1440px) {
+        @content;
+    }
+}
+
+// media mixins
+@mixin retina {
+    @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+        only screen and (-moz-min-device-pixel-ratio: 1.5),
+        only screen and (-o-min-device-pixel-ratio: 3/2),
+        only screen and (min-device-pixel-ratio: 1.5) {
+        @content;
+    }
+}
+
+@mixin safari-only {
+    @media not all and (min-resolution: 0.001dpcm) {
+        @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+            @content;
+        }
+    }
+}

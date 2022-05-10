@@ -1,0 +1,42 @@
+@import '../../styles/mixins';
+
+.player {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+
+    svg * {
+        @include transition;
+    }
+
+    &:hover,
+    &:focus {
+        svg circle {
+            fill: var(--primaryHover);
+        }
+    }
+
+    &:active {
+        svg circle {
+            fill: var(--primaryActive);
+        }
+    }
+
+    &__button {
+        height: 36px;
+
+        circle {
+            fill: var(--primaryColor);
+        }
+
+        path,
+        rect {
+            fill: #fff;
+        }
+    }
+}
