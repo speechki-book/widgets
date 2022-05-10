@@ -2,11 +2,12 @@
 
 <script>
 /** @TODOS
- *  [t][] selection events
- *  [ ] observe query params to reload speakers
+ *  [x] selection events
  *  [x] loading state
  *  [x] change endpoint for speakers
  *  [x] sample stop others
+ *  [ ] clear window events on destroy
+ *  [ ] clear selected speaker on language change
  *
  */
 import { onMount } from 'svelte';
@@ -40,6 +41,9 @@ function fetch(customer_id, bookLanguage) {
     fetchSpeakers(customer_id, bookLanguage)
         .then((result) => {
             speakers = result;
+        })
+        .catch((e) => {
+            speakers = [];
         })
         .finally(() => (loading = false));
 }
