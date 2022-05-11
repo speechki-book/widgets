@@ -129,12 +129,15 @@ class Widget {
             return;
         }
 
-        this.instance.contentWindow.postMessage({
-            event: 'change_language',
-            data: {
-                language,
+        this.instance.contentWindow.postMessage(
+            {
+                event: 'change_language',
+                data: {
+                    language,
+                },
             },
-        });
+            '*'
+        );
     }
 }
 
