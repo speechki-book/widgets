@@ -61,7 +61,7 @@ class Widget {
 
         window.addEventListener('message', this.select);
         window.addEventListener('beforeunload', () => {
-            window.removeEventListener('message');
+            window.removeEventListener('message', this.select);
         });
     }
 
