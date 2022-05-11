@@ -9,6 +9,7 @@
         "start": "sirv public --no-clear"
     },
     "devDependencies": {
+        "@babel/core": "^7.17.10",
         "@babel/preset-env": "^7.17.10",
         "@rollup/plugin-babel": "^5.3.1",
         "@rollup/plugin-commonjs": "^17.0.0",
