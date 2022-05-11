@@ -93,12 +93,12 @@ export default [
                 sourcemap: !production,
                 format: 'iife',
                 name: 'Speechki',
-                file: 'public/build/widget.js',
+                file: 'public/widget.js',
             },
             {
                 format: 'esm',
                 name: 'Speechki',
-                file: 'public/build/widget.esm.js',
+                file: 'public/widget.esm.js',
             },
         ],
         plugins: [

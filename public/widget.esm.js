@@ -1,5 +1,3 @@
-const WIDGET_URL = process.env.WIDGET_URL;
-
 function widget(options = {}) {
     if (!validate(options)) return;
 
@@ -14,7 +12,7 @@ function widget(options = {}) {
     }
 
     const iframe = document.createElement('iframe');
-    const src = process.env.WIDGET_URL + '/?' + createQuery(options);
+    const src = "http://localhost:8080" + '/?' + createQuery(options);
     iframe.setAttribute('src', src);
     iframe.style.background = 'transparent';
     iframe.style.visibility = 'visible';
@@ -138,6 +136,8 @@ class Widget {
     }
 }
 
-export default {
+var widget$1 = {
     widget,
 };
+
+export { widget$1 as default };

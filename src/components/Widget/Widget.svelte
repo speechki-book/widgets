@@ -1,16 +1,7 @@
 <style lang="scss" src="./Widget.scss"></style>
 
 <script>
-/** @TODOS
- *  [x] selection events
- *  [x] loading state
- *  [x] change endpoint for speakers
- *  [x] sample stop others
- *  [ ] clear window events on destroy
- *  [ ] clear selected speaker on language change
- *
- */
-import { onMount } from 'svelte';
+import { onMount, onDestroy } from 'svelte';
 
 import Speaker from '../Speaker/Speaker.svelte';
 import Loader from '../Loader/Loader.svelte';
@@ -35,6 +26,10 @@ onMount(() => {
     setupPostMessage();
 });
 
+onDestroy(() => {
+    window.removeEventListener('message', changeLanguage);
+});
+
 function fetch(customer_id, bookLanguage) {
     loading = true;
 
@@ -49,11 +44,14 @@ function fetch(customer_id, bookLanguage) {
 }
 
 function setupPostMessage() {
-    window.addEventListener('message', ({ data }) => {
-        if (data.event === 'change_language') {
-            fetch(getParams().customer_id, data.data.language);
-        }
-    });
+    window.addEventListener('message', changeLanguage);
+}
+
+function changeLanguage({ data }) {
+    if (data.event === 'change_language') {
+        selectedSpeaker.set('');
+        fetch(getParams().customer_id, data.data.language);
+    }
 }
 
 function select(event) {
