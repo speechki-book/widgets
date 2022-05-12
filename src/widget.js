@@ -59,9 +59,9 @@ class Widget {
         this.instance = instance;
         this.subs = {};
 
-        window.addEventListener('message', this.select);
+        window.addEventListener('message', this.select.bind(this));
         window.addEventListener('beforeunload', () => {
-            window.removeEventListener('message', this.select);
+            window.removeEventListener('message', this.select.bind(this));
         });
     }
 
