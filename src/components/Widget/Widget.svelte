@@ -94,11 +94,11 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
 </script>
 
 <div class="widget">
-    <div class="widget__inner">
-        {#if loading}
-            <Loader />
-        {:else}
-            <Search bind:search={filter} on:search={setFilter} />
+    <Search bind:search={filter} on:search={setFilter} />
+    {#if loading}
+        <Loader />
+    {:else}
+        <div class="widget__inner">
             <ul class="widget__list list">
                 {#each filteredSpeakers as speaker}
                     <li class="list__item">
@@ -106,6 +106,6 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
                     </li>
                 {/each}
             </ul>
-        {/if}
-    </div>
+        </div>
+    {/if}
 </div>
