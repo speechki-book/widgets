@@ -34,7 +34,7 @@ Not available yet
 
 ### Methods
 
-####`on(name, callback)` 
+#### `on(name, callback)` 
 subscribes to widget event
 
 ##### Events
