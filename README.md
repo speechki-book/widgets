@@ -116,7 +116,7 @@ changes the language filter in widget
         <title>Speechki Speakers</title>
         <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
 
-        <script defer src="/widget.js"></script>
+        <script defer src="https://widget.speechki.org/widget.js"></script>
     </head>
 
     <body>
