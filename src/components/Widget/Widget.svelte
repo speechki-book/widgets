@@ -89,7 +89,7 @@ function getName(speaker) {
 }
 
 $: filteredSpeakers = speakers.slice().filter((s) => {
-    return getName(s).startsWith(filter);
+    return getName(s).toLowerCase().startsWith(filter.toLowerCase());
 });
 </script>
 
