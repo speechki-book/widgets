@@ -34,7 +34,7 @@ Not available yet
 
 ### Methods
 
-####`on(name, callback)` 
+#### `on(name, callback)` 
 subscribes to widget event
 
 ##### Events
@@ -102,53 +102,85 @@ changes the language filter in widget
 </body>
 ```
 
-### With simple form
+### With simple form 
+<a href="https://widget.speechki.org/demo.html" target="_blank">Demo</a>
+
 
 ```html
-...
-<head>
-  <script defer src="https://widget.speechki.org/widget.js"></script>
-</head>
-<body>
-  ...
-    <form if="form">
-     ... 
-      <label>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-        <div id="widget1"></div>
-      </label>
-      ...
-    </form>
-  ...
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const widget1 = Speechki.widget({ // creates widget
-        target: '#widget1',
-        customer_id: 3,
-        book_language: 'english',
-      });
-      widget1.on('select', onSelect); // subscribe to the event
-    
-      let speaker;
-      
-    
-      function onSelect(event) {
-        speaker = event.data.slug;
-      }
-    
-      const form = document.getElementById('form');
-      form.addEventListener('submit', function(event) {
-        event.preventDefault();
-    
-        const data = {
-          ...other form data,
-          speaker // speaker from widget
-        }
-    
-        ...submit your form with whatever you use for http requests
-      });
-    });    
-  </script>
-</body>
+        <title>Speechki Speakers</title>
+        <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+
+        <script defer src="https://widget.speechki.org/widget.js"></script>
+    </head>
+
+    <body>
+        <main>
+            <h2>Form Demo</h2>
+            <form id="form">
+                <p>
+                    <label for="title">
+                        Book Title
+                    </label><br>
+                    <input type="text" id="title" placeholder="Title" name="title" />
+                </p>
+                <p>
+                    <label for="title">ISBN</label><br>
+                    <input type="text" id="title" placeholder="ISBN" name="ISBN" />
+                </p>
+                <p>
+                    <label for="language">Language</label><br>
+                    <select name="language" id="language">
+                        <option selected value="english">English</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="speaker">
+                        Speaker
+                    </label><br>
+                    <div style="max-height: 300px" id="widget1"></div>
+                </p>
+                <button>Submit</button>
+            </form>
+        </main>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const w1 = Speechki.widget({ // initialize widget
+                    target: '#widget1',
+                    customer_id: 3,
+                    book_language: 'english',
+                });
+
+                language.addEventListener('change', function (event) { //change language
+                    w1.changeLanguage(event.target.value);
+                });
+
+                let speaker;
+
+                w1.on('select', (event) => { // subscribe to select event
+                    speaker = event.data.slug;
+                });
+                
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    let data = new FormData(event.target);
+                    
+                    data.append('speaker', speaker);
+                    
+                    data = JSON.stringify(Object.fromEntries(data));
+                    
+                    alert(data);
+                })
+            });
+        </script>
+    </body>
+</html>
+
 ```
 
