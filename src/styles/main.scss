@@ -1,0 +1,8 @@
+@import './styles/reset';
+@import './styles/variables';
+
+* {
+    &:focus {
+        outline: 1px solid red;
+    }
+}

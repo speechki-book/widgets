@@ -1,0 +1,11 @@
+module.exports = {
+    tabWidth: 4,
+    semi: true,
+    singleQuote: true,
+    printWidth: 100,
+    svelteSortOrder: 'styles-scripts-markup',
+    svelteStrictMode: false,
+    svelteBracketNewLine: true,
+    htmlWhitespaceSensitivity: 'ignore',
+    svelteIndentScriptAndStyle: false,
+};

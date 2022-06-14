@@ -1,0 +1,9 @@
+/node_modules/
+/public/build/
+!/public/widget.js
+!/public/widget.esm.js
+/dist/
+
+.DS_Store
+*.local
+test_*.*
