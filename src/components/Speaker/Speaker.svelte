@@ -31,7 +31,6 @@ $: isActive = $selectedSpeaker === speaker.slug;
     <div class="speaker__info">
         <div class="speaker__name">
             {speaker.name.eng}
-            <div class="speaker__recommend" />
         </div>
         {#if speaker.description}
             <span class="speaker__description">{speaker.description}</span>

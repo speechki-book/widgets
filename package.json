@@ -2,11 +2,10 @@
     "name": "speechki-speakers-widget",
     "version": "1.0.0",
     "private": true,
+    "main": "./src/widget.js",
     "scripts": {
-        "build": "API_URL=https://hermes.books.speechkit.ru/api/v1 WIDGET_URL=https://widget.speechki.org rollup -c",
-        "build:stage": "API_URL=https://hermesdev.books.speechkit.ru/api/v1 WIDGET_URL=https://widgetdev.speechki.org rollup -c",
-        "dev": "API_URL=https://hermesdev.books.speechkit.ru/api/v1 WIDGET_URL=http://localhost:8080 rollup -c -w",
-        "start": "sirv public --no-clear"
+        "start": "sirv public --no-clear",
+        "build": "cross-env MODE=production rollup -c"
     },
     "devDependencies": {
         "@babel/core": "^7.17.10",
@@ -15,6 +14,8 @@
         "@rollup/plugin-commonjs": "^17.0.0",
         "@rollup/plugin-node-resolve": "^11.0.0",
         "autoprefixer": "^10.4.7",
+        "cross-env": "^7.0.3",
+        "dotenv": "^16.0.1",
         "postcss": "^8.4.13",
         "postcss-load-config": "^3.1.4",
         "prettier": "^2.6.2",

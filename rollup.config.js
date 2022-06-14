@@ -6,10 +6,13 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from 'rollup-plugin-replace';
 import { babel } from '@rollup/plugin-babel';
+import dontenv from 'dotenv';
 
 import preprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
+
+dontenv.config({ path: `.env.${process.env.MODE}` });
 
 function serve() {
     let server;
