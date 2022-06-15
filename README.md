@@ -206,3 +206,7 @@ changes the language filter in widget
 </html>
 
 ```
+
+## Self hosting
+
+If you want to serve this widget from your server, then clone/fork the repository, store it somewhere on your servers and replace `WIDGET_URL=https://widget.speechki.org` to `WIDGET_URL=your_domain` in `.env.production` file.
