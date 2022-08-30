@@ -4,14 +4,14 @@
     display: flex;
     align-items: center;
     width: 100%;
-    min-height: 42px;
+    min-height: 30px;
     margin: 0;
     background: none;
     border: none;
     border-radius: 10px;
     transition: var(--transition);
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 0 5px;
 
     &:hover {
         background-color: var(--hover);
@@ -24,6 +24,7 @@
 
     &__sample {
         margin-right: 10px;
+        transform: scale(0.7);
     }
 
     &__name {
