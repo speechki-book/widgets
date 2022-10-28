@@ -17,6 +17,11 @@
         </header>
 
         <main>
+            <label for="title">
+                Select customer ID:
+            </label><br>
+            <input form="form" id="customer_id" type="number" required placeholder="Customer ID" name="customer_id">
+            
             <h2>Form Demo</h2>
             <form id="form">
                 <p>
@@ -32,7 +37,7 @@
                 <p>
                     <label for="language">Language</label><br>
                     <select name="language" id="language">
-                        <option selected value="english">English</option>
+                        <option selected disabled value="none">Please set customer ID before selecting language</option>
                     </select>
                 </p>
                 <p>
@@ -46,37 +51,67 @@
         </main>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const w1 = Speechki.widget({
-                    target: '#widget1',
-                    customer_id: 3,
-                    book_language: 'english',
+                let w1, speaker;
+
+                customer_id.addEventListener('change', (event) => {
+                    console.log(event);
+                    fetchLanguages(event.target.value).then((languages) => {
+                        if(!!document.querySelector('iframe')) {
+                            document.querySelector('iframe').remove();
+
+                        }
+                        
+                        w1 = Speechki.widget({
+                            target: '#widget1',
+                            customer_id: event.target.value,
+                            book_language: languages[0],
+                        });
+
+                        language.value = languages[0];
+                        language.addEventListener('change', changeLanguage);
+
+
+                        w1.on('select', (event) => {
+                            speaker = event.data.slug;
+                        });
+
+                        form.addEventListener('submit', submitForm);
+                    });
                 });
 
-                language.addEventListener('change', function (event) {
+                function changeLanguage(event) {
                     w1.changeLanguage(event.target.value);
-                });
+                }
 
-                let speaker;
-
-                w1.on('select', (event) => {
-                    speaker = event.data.slug;
-                });
-                
-
-                console.log(form);
-                
-                form.addEventListener('submit', (event) => {
+                function submitForm(event) {
                     event.preventDefault();
 
                     let data = new FormData(event.target);
-                    
+
                     data.append('speaker', speaker);
+                    data.delete('customer_id');
                     
                     data = JSON.stringify(Object.fromEntries(data));
                     
                     alert(data);
-                })
+                }
+
+                function fetchLanguages(customer) {
+                    return fetch(`https://hermes.books.speechki.org/api/v1/speech_settings/languages_by_customer/${customer}/`).then(response => response.json()).then(languages => {
+                        Object.entries(languages).forEach(([lang, label]) => {
+                            const option = document.createElement('option');
+                            option.setAttribute('value', lang);
+                            option.text = label;
+
+                            language.appendChild(option);
+                        });
+
+                        return Object.keys(languages);
+                    })
+                }
             });
+
+            
         </script>
     </body>
 </html>
