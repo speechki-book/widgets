@@ -54,7 +54,9 @@ function play() {
 }
 
 function pause() {
-    audio.pause();
+    if (audio) {
+        audio.pause();
+    }
     window.cancelAnimationFrame(raf);
     raf = null;
     playing = false;
