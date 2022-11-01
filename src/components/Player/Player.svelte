@@ -27,6 +27,8 @@ activeSample.subscribe((value) => {
 });
 
 function onUpdate() {
+    if (!audio) return;
+
     progress = audio.currentTime / audio.duration;
 
     if (playing) {
@@ -64,7 +66,9 @@ function pause() {
 
 function stop() {
     pause();
-    audio.currentTime = 0;
+    if (audio) {
+        audio.currentTime = 0;
+    }
     progress = 0;
 }
 </script>
