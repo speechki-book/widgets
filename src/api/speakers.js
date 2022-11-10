@@ -33,6 +33,5 @@ export const fetchSpeakers = async (customerId, language, params = {}) => {
 };
 
 export const fetchSpeakersWithRetry = async (customerId, language, params = {}) => {
-    console.log(...arguments);
     return await retry(() => fetchSpeakers(customerId, language, params));
 };
