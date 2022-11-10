@@ -1,6 +1,6 @@
 {
     "name": "@speechki/widgets",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "main": "./public/widget.esm.js",
     "scripts": {
         "start": "sirv public --no-clear",

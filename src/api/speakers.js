@@ -1,3 +1,5 @@
+import { retry } from './utils';
+
 const baseUrl = process.env.API_URL;
 
 export const fetchSpeakers = async (customerId, language, params = {}) => {
@@ -28,4 +30,8 @@ export const fetchSpeakers = async (customerId, language, params = {}) => {
 
     const speakers = await response.json();
     return speakers;
+};
+
+export const fetchSpeakersWithRetry = async (customerId, language, params = {}) => {
+    return await retry(() => fetchSpeakers(customerId, language, params));
 };
