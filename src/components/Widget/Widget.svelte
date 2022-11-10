@@ -7,7 +7,7 @@ import Speaker from '../Speaker/Speaker.svelte';
 import Loader from '../Loader/Loader.svelte';
 import Search from '../Search/Search.svelte';
 
-import { fetchSpeakers } from '../../api/speakers';
+import { fetchSpeakersWithRetry as fetchSpeakers } from '../../api/speakers';
 
 import { selectedSpeaker } from '../../store';
 
