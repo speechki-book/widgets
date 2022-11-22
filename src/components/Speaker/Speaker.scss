@@ -30,12 +30,23 @@
     }
 
     &__name {
-        display: block;
+        display: flex;
+        align-items: center;
         font-weight: 600;
         color: var(--secondaryColor);
         @include transition;
         margin-bottom: 0.15rem;
         text-align: left;
+    }
+
+    &__provider {
+        margin-left: 6px;
+    }
+
+    &__provider-logo {
+        margin-bottom: -5px;
+        max-width: 20px;
+        height: auto;
     }
 
     &__description {
