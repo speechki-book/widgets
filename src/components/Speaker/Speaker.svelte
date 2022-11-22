@@ -31,6 +31,11 @@ $: isActive = $selectedSpeaker === speaker.slug;
     <div class="speaker__info">
         <div class="speaker__name">
             {speaker.name.eng}
+            {#if speaker.provider_information && speaker.provider_information.icon}
+                <div class="speaker__provider">
+                    <img class="speaker__provider-logo" src={speaker.provider_information.icon} />
+                </div>
+            {/if}
         </div>
         {#if speaker.description}
             <span class="speaker__description">{speaker.description}</span>
