@@ -3,7 +3,7 @@
     "version": "1.0.6",
     "main": "./public/widget.esm.js",
     "scripts": {
-        "start": "sirv public --no-clear",
+        "start": "sirv dist --no-clear",
         "dev": "cross-env MODE=local rollup -c -w",
         "build": "cross-env MODE=production rollup -c"
     },
@@ -23,9 +23,13 @@
         "dotenv": "^16.0.1",
         "postcss": "^8.4.13",
         "postcss-load-config": "^3.1.4",
+        "posthtml": "^0.16.6",
+        "posthtml-hash": "^1.2.2",
         "prettier": "^2.6.2",
         "prettier-plugin-svelte": "^2.7.0",
+        "rimraf": "^3.0.2",
         "rollup": "^2.3.4",
+        "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-css-only": "^3.1.0",
         "rollup-plugin-livereload": "^2.0.0",
         "rollup-plugin-replace": "^2.2.0",

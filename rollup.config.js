@@ -6,13 +6,30 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from 'rollup-plugin-replace';
 import { babel } from '@rollup/plugin-babel';
+import copy from 'rollup-plugin-copy';
+import posthtml from 'posthtml';
+import { hash } from 'posthtml-hash';
+import rimraf from 'rimraf';
+import fs from 'fs';
 import dontenv from 'dotenv';
-
 import preprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
+const OUT_DIR = 'dist';
+const OUT_FILE = `${OUT_DIR}/index.html`;
 
 dontenv.config({ path: `.env.${process.env.MODE}` });
+
+const hashStatic = () => ({
+    name: 'hashStatic',
+    buildStart: () => rimraf.sync(OUT_DIR),
+    writeBundle: () => {
+        posthtml([hash({ path: OUT_DIR })])
+            .process(fs.readFileSync(OUT_FILE, 'utf-8'))
+            .then((result) => fs.writeFileSync(OUT_FILE, result.html))
+            .catch((e) => console.log(e));
+    },
+});
 
 function serve() {
     let server;
@@ -42,9 +59,10 @@ export default [
             sourcemap: !production,
             format: 'iife',
             name: 'app',
-            file: 'public/build/bundle.js',
+            file: `${OUT_DIR}/bundle.[hash].js`,
         },
         plugins: [
+            copy({ targets: [{ src: 'public/*', dest: OUT_DIR }] }),
             svelte({
                 preprocess: preprocess({
                     postcss: {
@@ -59,7 +77,7 @@ export default [
             }),
             // we'll extract any component CSS out into
             // a separate file - better for performance
-            css({ output: 'bundle.css' }),
+            css({ output: 'bundle.[hash].css' }),
 
             // If you have external dependencies installed from
             // npm, you'll most likely need these plugins. In
@@ -77,13 +95,15 @@ export default [
             // the bundle has been generated
             !production && serve(),
 
-            // Watch the `public` directory and refresh the
+            // Watch the `dist` directory and refresh the
             // browser on changes when not in production
-            !production && livereload('public'),
+            !production && livereload('dist'),
 
             // If we're building for production (npm run build
             // instead of npm run dev), minify
             production && terser(),
+
+            production && hashStatic(),
         ],
         watch: {
             clearScreen: false,
@@ -96,12 +116,12 @@ export default [
                 sourcemap: !production,
                 format: 'iife',
                 name: 'Speechki',
-                file: 'public/widget.js',
+                file: 'dist/widget.js',
             },
             {
                 format: 'esm',
                 name: 'Speechki',
-                file: 'public/widget.esm.js',
+                file: 'dist/widget.esm.js',
             },
         ],
         plugins: [
