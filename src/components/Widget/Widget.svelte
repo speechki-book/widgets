@@ -89,7 +89,8 @@ function getName(speaker) {
 }
 
 $: filteredSpeakers = speakers.slice().filter((s) => {
-    return getName(s).toLowerCase().startsWith(filter.toLowerCase());
+    const regex = new RegExp(filter, 'gi');
+    return regex.test(getName(s));
 });
 </script>
 
