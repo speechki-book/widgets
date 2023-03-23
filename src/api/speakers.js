@@ -29,9 +29,29 @@ export const fetchSpeakers = async (customerId, language, params = {}) => {
     }
 
     const speakers = await response.json();
+
     return speakers;
 };
 
 export const fetchSpeakersWithRetry = async (customerId, language, params = {}) => {
     return await retry(() => fetchSpeakers(customerId, language, params));
+};
+
+export const fetchSpeechSettingsTags = async (params = {}) => {
+    params = {
+        page_size: 1000,
+        ...params,
+    };
+
+    const url = new URL(`${baseUrl}/speech_settings/tags/`);
+    url.search = new URLSearchParams(params).toString();
+
+    const response = await fetch(url);
+    const tags = await response.json();
+
+    return tags.results;
+};
+
+export const fetchSpeechSettingsTagsWithRetry = async (params = {}) => {
+    return await retry(() => fetchSpeechSettingsTags(params));
 };

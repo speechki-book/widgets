@@ -6,6 +6,7 @@ import { onMount, onDestroy } from 'svelte';
 import Speaker from '../Speaker/Speaker.svelte';
 import Loader from '../Loader/Loader.svelte';
 import Search from '../Search/Search.svelte';
+import SearchTags from '../SearchTags/SearchTags.svelte';
 
 import { fetchSpeakersWithRetry as fetchSpeakers } from '../../api/speakers';
 
@@ -14,6 +15,7 @@ import { selectedSpeaker } from '../../store';
 let speakers = [];
 let loading = false;
 let filter = '';
+let filterTags = '';
 
 const getParams = () => {
     const observeParams = ['customer_id', 'book_language'];
@@ -80,6 +82,10 @@ function setFilter(event) {
     filter = event.detail;
 }
 
+function setFilterTags(event) {
+    filterTags = event.detail;
+}
+
 function getName(speaker) {
     const {
         name: { eng = '' },
@@ -90,12 +96,21 @@ function getName(speaker) {
 
 $: filteredSpeakers = speakers.slice().filter((s) => {
     const regex = new RegExp(filter, 'gi');
-    return regex.test(getName(s));
+    let metaTags = true;
+
+    if (filterTags.length && s.meta_tags.length) {
+        metaTags = filterTags.map(t => t.slug).some(t => s.meta_tags.includes(t))
+    }
+
+    return regex.test(getName(s)) && metaTags;
 });
 </script>
 
 <div class="widget">
-    <Search bind:search={filter} on:search={setFilter} />
+    <div class="widget__search-wrap">
+        <Search bind:search={filter} on:search={setFilter} />
+        <SearchTags on:searchTags={setFilterTags} />
+    </div>
     {#if loading}
         <Loader />
     {:else}
