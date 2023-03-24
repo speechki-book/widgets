@@ -98,8 +98,8 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
     const regex = new RegExp(filter, 'gi');
     let metaTags = true;
 
-    if (filterTags.length && s.meta_tags.length) {
-        metaTags = filterTags.map(t => t.slug).some(t => s.meta_tags.includes(t))
+    if (filterTags.length) {
+        metaTags = s.meta_tags.length ? filterTags.some(t => s.meta_tags.includes(t.slug)) : false;
     }
 
     return regex.test(getName(s)) && metaTags;

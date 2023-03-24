@@ -5,8 +5,6 @@ import { onMount, createEventDispatcher } from 'svelte';
 import Loader from '../Loader/Loader.svelte';
 import { fetchSpeechSettingsTagsWithRetry as fetchSpeechSettingsTags } from '../../api/speakers';
 
-export let search = '';
-
 let loading = false;
 let tags = [];
 let show = 0;
@@ -34,7 +32,8 @@ function fetch() {
 }
 
 function clear() {
-    dispatch('search', '');
+    tags = tags.map(t => ({ ...t, selected: false }));
+    dispatch('searchTags', []);
 }
 
 function onInputClick() {
@@ -63,10 +62,11 @@ $: seletedTagsStr = tags.filter(t => t.selected).map(t => t.name).join(', ')
         type="text"
         placeholder="Type tag"
         class="search-tags__input"
-        on:focus={onInputClick}
+        on:click={onInputClick}
         value={seletedTagsStr}
+        readonly
     />
-    {#if search}
+    {#if seletedTagsStr}
         <button class="search-tags__clear" type="button" on:click={clear}>✕</button>
     {/if}
     <div class="search-tags__dropdown" data-show={show} on:mouseleave={onMouseLeave}>
@@ -75,11 +75,7 @@ $: seletedTagsStr = tags.filter(t => t.selected).map(t => t.name).join(', ')
         {:else}
             <ul class="search-tags__list list">
                 {#each tags as tag}
-                    {#if tag.selected}
-                        <li class="list__item is-selected" on:click={handleClick(tag.slug)}>{tag.name}</li>
-                    {:else}
-                        <li class="list__item" on:click={handleClick(tag.slug)}>{tag.name}</li>
-                    {/if}
+                    <li class="list__item {tag.selected ? 'is-selected' : ''}" on:click={handleClick(tag.slug)}>{tag.name}</li>
                 {/each}
             </ul>
         {/if}
