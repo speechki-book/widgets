@@ -60,7 +60,7 @@ $: seletedTagsStr = tags.filter(t => t.selected).map(t => t.name).join(', ')
 <div class="search-tags">
     <input
         type="text"
-        placeholder="Type tag"
+        placeholder="Select tag"
         class="search-tags__input"
         on:click={onInputClick}
         value={seletedTagsStr}
