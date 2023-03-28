@@ -4,6 +4,7 @@
 import { onMount, onDestroy } from 'svelte';
 
 import Speaker from '../Speaker/Speaker.svelte';
+import SpeakerTags from '../SpeakerTags/SpeakerTags.svelte';
 import Loader from '../Loader/Loader.svelte';
 import Search from '../Search/Search.svelte';
 import SearchTags from '../SearchTags/SearchTags.svelte';
@@ -118,7 +119,10 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
             <ul class="widget__list list">
                 {#each filteredSpeakers as speaker}
                     <li class="list__item">
-                        <Speaker {speaker} on:select={select} class="list__item" />
+                        <Speaker {speaker} on:select={select} />
+                        {#if speaker.meta_tags.length}
+                            <SpeakerTags {speaker} />
+                        {/if}
                     </li>
                 {/each}
             </ul>
