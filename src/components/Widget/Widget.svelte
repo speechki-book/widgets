@@ -100,7 +100,7 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
     let metaTags = true;
 
     if (filterTags.length) {
-        metaTags = s.meta_tags.length ? filterTags.some(t => s.meta_tags.includes(t.slug)) : false;
+        metaTags = s.meta_tags.length ? filterTags.every(t => s.meta_tags.includes(t.slug)) : false;
     }
 
     return regex.test(getName(s)) && metaTags;

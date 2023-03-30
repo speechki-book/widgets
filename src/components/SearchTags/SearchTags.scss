@@ -46,8 +46,8 @@
     &__dropdown {
         display: none;
         width: calc(100% - 30px);
-        height: 115px;
-        padding: 15px;
+        height: 80px;
+        padding: 5px;
         overflow-y: auto;
         background: #fff;
         position: absolute;
@@ -69,13 +69,14 @@
 
         &__item {
             margin: 0;
-            padding: 12px 0 12px 24px;
+            padding: 5px 5px 5px 24px;
             position: relative;
             line-height: 1;
             font-size: 12px;
             color: var(--textColor);
             cursor: pointer;
-            border-bottom: solid 1px var(--textColor);
+            border-bottom: 1px solid #d5d8e5;
+            border-radius: 5px;
 
             &::before {
                 position: absolute;
@@ -98,6 +99,10 @@
 
             &:hover {
                 background-color: rgba(#ff6b06, .2);
+            }
+
+            &:last-child {
+                border: none;
             }
         }
     }
