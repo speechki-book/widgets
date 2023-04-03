@@ -21,8 +21,8 @@ jobs:
             - name: Npm install
               run: npm ci
 
-            - name: Create google creds file
-              run: echo LOCAL_ENV_FILE > ./env.local; pwd
+            - name: Create env file
+              run: echo LOCAL_ENV_FILE > .env.local; pwd
               env:
                 LOCAL_ENV_FILE: ${{ secrets.LOCAL_ENV_FILE }}
 
