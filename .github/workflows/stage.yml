@@ -22,12 +22,12 @@ jobs:
               run: npm ci
 
             - name: Create env file
-              run: echo LOCAL_ENV_FILE > .env.local; pwd
+              run: rm .env.production && echo LOCAL_ENV_FILE > .env.production; pwd
               env:
                 LOCAL_ENV_FILE: ${{ secrets.LOCAL_ENV_FILE }}
 
             - name: 'Build app'
-              run: npm run dev
+              run: npm run build
 
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v1
