@@ -13,7 +13,7 @@ $: tagsStr = speaker.meta_tags.join(', ')
 </script>
 
 <div class="speaker-tags">
-    <button class="speaker-tags__trigger" on:click={onClick}>
+    <button class="speaker-tags__trigger" on:click={onClick} data-show={+showList}>
         <div>?</div>
     </button>
     {#if showList}

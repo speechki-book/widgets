@@ -1,7 +1,7 @@
 <style lang="scss" src="./Widget.scss"></style>
 
 <script>
-import { onMount, onDestroy } from 'svelte';
+import { onMount, onDestroy, tick } from 'svelte';
 
 import Speaker from '../Speaker/Speaker.svelte';
 import SpeakerTags from '../SpeakerTags/SpeakerTags.svelte';
@@ -83,7 +83,13 @@ function setFilter(event) {
     filter = event.detail;
 }
 
-function setFilterTags(event) {
+async function setFilterTags(event) {
+    const speakersEls = document.querySelectorAll('.speaker-tags__trigger[data-show="1"]');
+    await tick();
+    speakersEls.forEach(el => {
+        el.click();
+    });
+
     filterTags = event.detail;
 }
 
