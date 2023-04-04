@@ -15,6 +15,12 @@
         max-height: 82%;
         overflow-y: scroll;
     }
+
+    &__search-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
 .list {
@@ -42,5 +48,9 @@
 
     &__item {
         width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
     }
 }

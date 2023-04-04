@@ -1,11 +1,13 @@
 <style lang="scss" src="./Widget.scss"></style>
 
 <script>
-import { onMount, onDestroy } from 'svelte';
+import { onMount, onDestroy, tick } from 'svelte';
 
 import Speaker from '../Speaker/Speaker.svelte';
+import SpeakerTags from '../SpeakerTags/SpeakerTags.svelte';
 import Loader from '../Loader/Loader.svelte';
 import Search from '../Search/Search.svelte';
+import SearchTags from '../SearchTags/SearchTags.svelte';
 
 import { fetchSpeakersWithRetry as fetchSpeakers } from '../../api/speakers';
 
@@ -14,6 +16,7 @@ import { selectedSpeaker } from '../../store';
 let speakers = [];
 let loading = false;
 let filter = '';
+let filterTags = '';
 
 const getParams = () => {
     const observeParams = ['customer_id', 'book_language'];
@@ -80,6 +83,16 @@ function setFilter(event) {
     filter = event.detail;
 }
 
+async function setFilterTags(event) {
+    const speakersEls = document.querySelectorAll('.speaker-tags__trigger[data-show="1"]');
+    await tick();
+    speakersEls.forEach(el => {
+        el.click();
+    });
+
+    filterTags = event.detail;
+}
+
 function getName(speaker) {
     const {
         name: { eng = '' },
@@ -89,12 +102,22 @@ function getName(speaker) {
 }
 
 $: filteredSpeakers = speakers.slice().filter((s) => {
-    return getName(s).toLowerCase().startsWith(filter.toLowerCase());
+    const regex = new RegExp(filter, 'gi');
+    let metaTags = true;
+
+    if (filterTags.length) {
+        metaTags = s.meta_tags.length ? filterTags.every(t => s.meta_tags.includes(t.slug)) : false;
+    }
+
+    return regex.test(getName(s)) && metaTags;
 });
 </script>
 
 <div class="widget">
-    <Search bind:search={filter} on:search={setFilter} />
+    <div class="widget__search-wrap">
+        <Search bind:search={filter} on:search={setFilter} />
+        <SearchTags on:searchTags={setFilterTags} />
+    </div>
     {#if loading}
         <Loader />
     {:else}
@@ -102,7 +125,10 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
             <ul class="widget__list list">
                 {#each filteredSpeakers as speaker}
                     <li class="list__item">
-                        <Speaker {speaker} on:select={select} class="list__item" />
+                        <Speaker {speaker} on:select={select} />
+                        {#if speaker.meta_tags.length}
+                            <SpeakerTags {speaker} />
+                        {/if}
                     </li>
                 {/each}
             </ul>
