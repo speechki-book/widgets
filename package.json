@@ -1,11 +1,15 @@
 {
     "name": "@speechki/widgets",
+    "type": "module",
     "version": "1.0.6",
     "main": "./public/widget.esm.js",
     "scripts": {
         "start": "sirv dist --no-clear",
         "dev": "cross-env MODE=local rollup -c -w",
-        "build": "cross-env MODE=production rollup -c"
+        "build": "cross-env MODE=production rollup -c",
+        "vdev": "cross-env MODE=local APP=widget vite",
+        "vbuild": "cross-env MODE=local APP=widget vite build && cross-env MODE=local APP=library vite build",
+        "vpreview": "cross-env MODE=production vite preview"
     },
     "repository": {
         "type": "git",
@@ -13,33 +17,20 @@
     },
     "author": "speechki",
     "devDependencies": {
-        "@babel/core": "^7.17.10",
-        "@babel/preset-env": "^7.17.10",
-        "@rollup/plugin-babel": "^5.3.1",
-        "@rollup/plugin-commonjs": "^17.0.0",
-        "@rollup/plugin-node-resolve": "^11.0.0",
-        "autoprefixer": "^10.4.7",
+        "@sveltejs/vite-plugin-svelte": "^2.1.1",
+        "@vitejs/plugin-legacy": "^4.0.3",
+        "autoprefixer": "^10.4.14",
         "cross-env": "^7.0.3",
-        "dotenv": "^16.0.1",
-        "postcss": "^8.4.13",
-        "postcss-load-config": "^3.1.4",
-        "posthtml": "^0.16.6",
-        "posthtml-hash": "^1.2.2",
+        "postcss": "^8.4.23",
         "prettier": "^2.6.2",
         "prettier-plugin-svelte": "^2.7.0",
-        "rimraf": "^3.0.2",
-        "rollup": "^2.3.4",
-        "rollup-plugin-copy": "^3.4.0",
-        "rollup-plugin-css-only": "^3.1.0",
-        "rollup-plugin-livereload": "^2.0.0",
-        "rollup-plugin-replace": "^2.2.0",
-        "rollup-plugin-svelte": "^7.0.0",
-        "rollup-plugin-terser": "^7.0.0",
         "sass": "^1.51.0",
         "svelte": "^3.49.0",
-        "svelte-preprocess": "^4.10.6"
+        "svelte-preprocess": "^5.0.3",
+        "vite": "^4.3.3"
     },
     "dependencies": {
         "sirv-cli": "^2.0.0"
-    }
+    },
+    "browserslist": ["defaults"]
 }

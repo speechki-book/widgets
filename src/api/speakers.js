@@ -1,6 +1,6 @@
 import { retry } from './utils';
 
-const baseUrl = process.env.API_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
 
 export const fetchSpeakers = async (customerId, language, params = {}) => {
     if (!language) {
