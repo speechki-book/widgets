@@ -1,7 +1,7 @@
 <style lang="scss" src="./Loader.scss"></style>
 
 <script>
-    import { fade } from 'svelte/transition';
+import { fade } from 'svelte/transition';
 </script>
 
 <div transition:fade class="spinner">
