@@ -86,7 +86,7 @@ function setFilter(event) {
 async function setFilterTags(event) {
     const speakersEls = document.querySelectorAll('.speaker-tags__trigger[data-show="1"]');
     await tick();
-    speakersEls.forEach(el => {
+    speakersEls.forEach((el) => {
         el.click();
     });
 
@@ -106,7 +106,9 @@ $: filteredSpeakers = speakers.slice().filter((s) => {
     let metaTags = true;
 
     if (filterTags.length) {
-        metaTags = s.meta_tags.length ? filterTags.every(t => s.meta_tags.includes(t.slug)) : false;
+        metaTags = s.meta_tags.length
+            ? filterTags.every((t) => s.meta_tags.includes(t.slug))
+            : false;
     }
 
     return regex.test(getName(s)) && metaTags;

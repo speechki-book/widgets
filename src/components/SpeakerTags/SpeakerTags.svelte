@@ -9,7 +9,7 @@ function onClick() {
     showList = !showList;
 }
 
-$: tagsStr = speaker.meta_tags.join(', ')
+$: tagsStr = speaker.meta_tags.join(', ');
 </script>
 
 <div class="speaker-tags">

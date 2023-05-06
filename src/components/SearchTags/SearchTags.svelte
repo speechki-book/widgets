@@ -20,9 +20,9 @@ function fetch() {
 
     fetchSpeechSettingsTags()
         .then((result) => {
-            tags = result.map(tag => ({
+            tags = result.map((tag) => ({
                 ...tag,
-                selected: false
+                selected: false,
             }));
         })
         .catch((e) => {
@@ -32,7 +32,7 @@ function fetch() {
 }
 
 function clear() {
-    tags = tags.map(t => ({ ...t, selected: false }));
+    tags = tags.map((t) => ({ ...t, selected: false }));
     dispatch('searchTags', []);
 }
 
@@ -45,16 +45,22 @@ function onMouseLeave() {
 }
 
 function handleClick(slug) {
-    const idx = tags.findIndex(t => t.slug === slug);
+    const idx = tags.findIndex((t) => t.slug === slug);
     const tag = tags[idx];
     const { selected = false } = tag;
 
     tags[idx].selected = !selected;
 
-    dispatch('searchTags', tags.filter(t => t.selected));
+    dispatch(
+        'searchTags',
+        tags.filter((t) => t.selected)
+    );
 }
 
-$: seletedTagsStr = tags.filter(t => t.selected).map(t => t.name).join(', ')
+$: seletedTagsStr = tags
+    .filter((t) => t.selected)
+    .map((t) => t.name)
+    .join(', ');
 </script>
 
 <div class="search-tags">
@@ -75,7 +81,12 @@ $: seletedTagsStr = tags.filter(t => t.selected).map(t => t.name).join(', ')
         {:else}
             <ul class="search-tags__list list">
                 {#each tags as tag}
-                    <li class="list__item {tag.selected ? 'is-selected' : ''}" on:click={handleClick(tag.slug)}>{tag.name}</li>
+                    <li
+                        class="list__item {tag.selected ? 'is-selected' : ''}"
+                        on:click={handleClick(tag.slug)}
+                    >
+                        {tag.name}
+                    </li>
                 {/each}
             </ul>
         {/if}
