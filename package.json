@@ -1,15 +1,13 @@
 {
     "name": "@speechki/widgets",
     "type": "module",
-    "version": "1.0.6",
-    "main": "./public/widget.esm.js",
+    "version": "1.0.13",
+    "main": "./dist/widget.esm.js",
     "scripts": {
         "start": "sirv dist --no-clear",
-        "dev": "cross-env MODE=local rollup -c -w",
-        "build": "cross-env MODE=production rollup -c",
-        "vdev": "cross-env MODE=local APP=widget vite",
-        "vbuild": "cross-env MODE=local APP=widget vite build && cross-env MODE=local APP=library vite build",
-        "vpreview": "cross-env MODE=production vite preview"
+        "dev": "cross-env MODE=local APP=widget vite",
+        "build": "cross-env MODE=local APP=widget vite build && cross-env MODE=local APP=library vite build",
+        "preview": "cross-env MODE=production vite preview"
     },
     "repository": {
         "type": "git",
@@ -32,5 +30,7 @@
     "dependencies": {
         "sirv-cli": "^2.0.0"
     },
-    "browserslist": ["defaults"]
+    "browserslist": [
+        "defaults"
+    ]
 }
