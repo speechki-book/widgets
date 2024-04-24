@@ -46,7 +46,7 @@ jobs:
                   aws-region: eu-central-1
 
             - name: Upload to S3
-              run: aws s3 sync ./dist/ s3://widget.speechki.org/ --delete --acl bucket-owner-full-control
+              run: aws s3 sync ./dist/ s3://speechki-widget-prod/ --delete --acl bucket-owner-full-control
 
             - name: Publish to npm
               run: npm publish

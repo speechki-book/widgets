@@ -35,4 +35,4 @@ jobs:
                   aws-region: eu-central-1
 
             - name: Upload to S3
-              run: aws s3 sync ./dist/ s3://${{ secrets.STAGE_HOST }}/ --delete --acl bucket-owner-full-control
+              run: aws s3 sync ./dist/ s3://speechki-widget-dev/ --delete --acl bucket-owner-full-control
