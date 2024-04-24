@@ -1,6 +1,7 @@
 name: Deploy Widget to production
 
 on:
+    workflow_dispatch:
     pull_request:
         branches:
             - production
@@ -40,8 +41,8 @@ jobs:
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v1
               with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-access-key-id: ${{ secrets.PLUGIN_AWS_ACCESS_KEY }}
+                  aws-secret-access-key: ${{ secrets.PLUGIN_AWS_SECRET_KEY }}
                   aws-region: eu-central-1
 
             - name: Upload to S3
@@ -54,7 +55,7 @@ jobs:
 
             - name: Checkout master
               uses: actions/checkout@v3
-              with:  
+              with:
                   token: ${{ secrets.GH_PAT }}
                   fetch-depth: 0
                   ref: master
