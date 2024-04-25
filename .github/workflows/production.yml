@@ -49,7 +49,7 @@ jobs:
               run: aws s3 sync ./dist/ s3://speechki-widget-prod/ --delete --acl bucket-owner-full-control
 
             - name: Publish to npm
-              run: npm publish
+              run: npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -63,4 +63,4 @@ jobs:
             - name: Sync version bump with master
               run: |
                   git pull origin production
-                  git push master
+                  git push origin master
