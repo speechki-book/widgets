@@ -1,6 +1,7 @@
 name: Deploy Widget to production
 
 on:
+    workflow_dispatch:
     pull_request:
         branches:
             - production
@@ -40,12 +41,12 @@ jobs:
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v1
               with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-access-key-id: ${{ secrets.PLUGIN_AWS_ACCESS_KEY }}
+                  aws-secret-access-key: ${{ secrets.PLUGIN_AWS_SECRET_KEY }}
                   aws-region: eu-central-1
 
             - name: Upload to S3
-              run: aws s3 sync ./dist/ s3://widget.speechki.org/ --delete --acl bucket-owner-full-control
+              run: aws s3 sync ./dist/ s3://speechki-widget-prod/ --delete --acl bucket-owner-full-control
 
             - name: Publish to npm
               run: npm publish --access public

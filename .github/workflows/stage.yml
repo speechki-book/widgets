@@ -1,6 +1,7 @@
 name: Deploy Widget to stage
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
@@ -29,9 +30,9 @@ jobs:
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v1
               with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-access-key-id: ${{ secrets.PLUGIN_AWS_ACCESS_KEY }}
+                  aws-secret-access-key: ${{ secrets.PLUGIN_AWS_SECRET_KEY }}
                   aws-region: eu-central-1
 
             - name: Upload to S3
-              run: aws s3 sync ./dist/ s3://${{ secrets.STAGE_HOST }}/ --delete --acl bucket-owner-full-control
+              run: aws s3 sync ./dist/ s3://speechki-widget-dev/ --delete --acl bucket-owner-full-control
