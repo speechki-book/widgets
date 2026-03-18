@@ -21,7 +21,7 @@
         "autoprefixer": "^10.4.7",
         "cross-env": "^7.0.3",
         "dotenv": "^16.0.1",
-        "postcss": "^8.4.13",
+        "postcss": "^8.4.31",
         "postcss-load-config": "^3.1.4",
         "posthtml": "^0.16.6",
         "posthtml-hash": "^1.2.2",
