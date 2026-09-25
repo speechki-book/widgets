@@ -97,5 +97,5 @@ function stop() {
             </svg>
         </div>
     </div>
-    <audio class="visually-hidden" bind:this={audio} {src} controls on:ended={stop} />
+    <audio class="visually-hidden" bind:this={audio} {src} controls on:ended={stop}></audio>
 </div>
