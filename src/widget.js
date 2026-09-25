@@ -11,6 +11,7 @@ function widget(options = {}) {
 
     if (!target) {
         console.error('Speechki Widget error: No such target element found');
+        return;
     }
 
     const iframe = document.createElement('iframe');
@@ -32,17 +33,14 @@ function widget(options = {}) {
 function validate(options = {}) {
     const requireds = ['target', 'book_language', 'customer_id'];
 
-    const errors = [];
-    const entries = Object.entries(options);
-
-    entries.forEach(([key, value]) => {
-        if (Boolean(requireds.includes(key) && value)) return;
-
-        errors.push(`Speechki Widget error: Please specify ${key}`);
-    });
+    const errors = requireds
+        .filter((key) => !options[key])
+        .map((key) => `Speechki Widget error: Please specify ${key}`);
 
     if (!errors.length) return true;
+
     errors.forEach((e) => console.error(e));
+    return false;
 }
 
 function createQuery(options) {
@@ -59,9 +57,11 @@ class Widget {
         this.instance = instance;
         this.subs = {};
 
-        window.addEventListener('message', this.select.bind(this));
+        this.onMessage = this.select.bind(this);
+
+        window.addEventListener('message', this.onMessage);
         window.addEventListener('beforeunload', () => {
-            window.removeEventListener('message', this.select.bind(this));
+            window.removeEventListener('message', this.onMessage);
         });
     }
 
@@ -88,17 +88,17 @@ class Widget {
         return {
             name: event,
             callback: handler,
-            off: (event, handler) => this.off(event, handler),
+            off: (e = event, h = handler) => this.off(e, h),
         };
     }
 
     off(event, handler) {
-        if (!this.handlers[event]) return;
+        const handlers = this.subs[event];
 
-        let handlers = this.subs[event];
+        if (!handlers) return;
 
         if (handler) {
-            subs = subs.filter((h) => h != fn);
+            this.subs[event] = handlers.filter((h) => h !== handler);
             return;
         }
 
