@@ -2,15 +2,15 @@ import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import css from 'rollup-plugin-css-only';
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 import { babel } from '@rollup/plugin-babel';
-import copy from 'rollup-plugin-copy';
 import posthtml from 'posthtml';
 import { hash } from 'posthtml-hash';
-import rimraf from 'rimraf';
 import fs from 'fs';
+import { spawn } from 'child_process';
+import autoprefixer from 'autoprefixer';
 import dontenv from 'dotenv';
 import preprocess from 'svelte-preprocess';
 
@@ -20,9 +20,15 @@ const OUT_FILE = `${OUT_DIR}/index.html`;
 
 dontenv.config({ path: `.env.${process.env.MODE}` });
 
+// copies everything from `public/` into the output dir (replaces rollup-plugin-copy)
+const copyPublic = () => ({
+    name: 'copyPublic',
+    buildEnd: () => fs.cpSync('public', OUT_DIR, { recursive: true }),
+});
+
 const hashStatic = () => ({
     name: 'hashStatic',
-    buildStart: () => rimraf.sync(OUT_DIR),
+    buildStart: () => fs.rmSync(OUT_DIR, { recursive: true, force: true }),
     writeBundle: () => {
         posthtml([hash({ path: OUT_DIR })])
             .process(fs.readFileSync(OUT_FILE, 'utf-8'))
@@ -41,7 +47,7 @@ function serve() {
     return {
         writeBundle() {
             if (server) return;
-            server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+            server = spawn('npm', ['run', 'start', '--', '--dev'], {
                 stdio: ['ignore', 'inherit', 'inherit'],
                 shell: true,
             });
@@ -62,12 +68,12 @@ export default [
             file: `${OUT_DIR}/bundle.[hash].js`,
         },
         plugins: [
-            copy({ targets: [{ src: 'public/*', dest: OUT_DIR }] }),
+            copyPublic(),
             svelte({
                 preprocess: preprocess({
                     postcss: {
                         scss: true,
-                        plugins: [require('autoprefixer')],
+                        plugins: [autoprefixer],
                     },
                 }),
                 compilerOptions: {
@@ -84,7 +90,10 @@ export default [
             // some cases you'll need additional configuration -
             // consult the documentation for details:
             // https://github.com/rollup/plugins/tree/master/packages/commonjs
-            replace({ 'process.env.API_URL': JSON.stringify(process.env.API_URL) }),
+            replace({
+                preventAssignment: true,
+                'process.env.API_URL': JSON.stringify(process.env.API_URL),
+            }),
             resolve({
                 browser: true,
                 dedupe: ['svelte'],
@@ -126,10 +135,14 @@ export default [
             },
         ],
         plugins: [
-            replace({ 'process.env.WIDGET_URL': JSON.stringify(process.env.WIDGET_URL) }),
+            replace({
+                preventAssignment: true,
+                'process.env.WIDGET_URL': JSON.stringify(process.env.WIDGET_URL),
+            }),
             production && terser(),
             production &&
                 babel({
+                    babelHelpers: 'bundled',
                     presets: ['@babel/preset-env'],
                 }),
         ],
