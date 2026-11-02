@@ -6,10 +6,8 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from 'rollup-plugin-replace';
 import { babel } from '@rollup/plugin-babel';
-import copy from 'rollup-plugin-copy';
 import posthtml from 'posthtml';
 import { hash } from 'posthtml-hash';
-import rimraf from 'rimraf';
 import fs from 'fs';
 import dontenv from 'dotenv';
 import preprocess from 'svelte-preprocess';
@@ -20,9 +18,15 @@ const OUT_FILE = `${OUT_DIR}/index.html`;
 
 dontenv.config({ path: `.env.${process.env.MODE}` });
 
+// copies everything from `public/` into the output dir (replaces rollup-plugin-copy)
+const copyPublic = () => ({
+    name: 'copyPublic',
+    buildEnd: () => fs.cpSync('public', OUT_DIR, { recursive: true }),
+});
+
 const hashStatic = () => ({
     name: 'hashStatic',
-    buildStart: () => rimraf.sync(OUT_DIR),
+    buildStart: () => fs.rmSync(OUT_DIR, { recursive: true, force: true }),
     writeBundle: () => {
         posthtml([hash({ path: OUT_DIR })])
             .process(fs.readFileSync(OUT_FILE, 'utf-8'))
@@ -62,7 +66,7 @@ export default [
             file: `${OUT_DIR}/bundle.[hash].js`,
         },
         plugins: [
-            copy({ targets: [{ src: 'public/*', dest: OUT_DIR }] }),
+            copyPublic(),
             svelte({
                 preprocess: preprocess({
                     postcss: {
