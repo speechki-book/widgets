@@ -2,13 +2,15 @@ import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import css from 'rollup-plugin-css-only';
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 import { babel } from '@rollup/plugin-babel';
 import posthtml from 'posthtml';
 import { hash } from 'posthtml-hash';
 import fs from 'fs';
+import { spawn } from 'child_process';
+import autoprefixer from 'autoprefixer';
 import dontenv from 'dotenv';
 import preprocess from 'svelte-preprocess';
 
@@ -45,7 +47,7 @@ function serve() {
     return {
         writeBundle() {
             if (server) return;
-            server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+            server = spawn('npm', ['run', 'start', '--', '--dev'], {
                 stdio: ['ignore', 'inherit', 'inherit'],
                 shell: true,
             });
@@ -71,7 +73,7 @@ export default [
                 preprocess: preprocess({
                     postcss: {
                         scss: true,
-                        plugins: [require('autoprefixer')],
+                        plugins: [autoprefixer],
                     },
                 }),
                 compilerOptions: {
@@ -88,7 +90,10 @@ export default [
             // some cases you'll need additional configuration -
             // consult the documentation for details:
             // https://github.com/rollup/plugins/tree/master/packages/commonjs
-            replace({ 'process.env.API_URL': JSON.stringify(process.env.API_URL) }),
+            replace({
+                preventAssignment: true,
+                'process.env.API_URL': JSON.stringify(process.env.API_URL),
+            }),
             resolve({
                 browser: true,
                 dedupe: ['svelte'],
@@ -130,10 +135,14 @@ export default [
             },
         ],
         plugins: [
-            replace({ 'process.env.WIDGET_URL': JSON.stringify(process.env.WIDGET_URL) }),
+            replace({
+                preventAssignment: true,
+                'process.env.WIDGET_URL': JSON.stringify(process.env.WIDGET_URL),
+            }),
             production && terser(),
             production &&
                 babel({
+                    babelHelpers: 'bundled',
                     presets: ['@babel/preset-env'],
                 }),
         ],
